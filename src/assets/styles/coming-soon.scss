@@ -1,0 +1,177 @@
+sf-coming-soon {
+  top: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000000;
+  overflow: hidden;
+  div {
+    width: 100%;
+  }
+
+  // n is number of stars required
+  @function multiple-box-shadow ($n) {
+    $value: '#{random(2000)}px #{random(2000)}px #FFF';
+    @for $i from 2 through $n {
+      $value: '#{$value} , #{random(2000)}px #{random(2000)}px #FFF';
+    }
+
+    @return unquote($value);
+  }
+
+  @function multiple-box-shadowH ($n) {
+    $value: '#{random(9000) + 1000}px #{random(2000)}px #FFF';
+    @for $i from 2 through $n {
+      $value: '#{$value} , #{random(9000) + 1000}px #{random(2000)}px #FFF';
+    }
+
+    @return unquote($value);
+  }
+
+  $shadows-small: multiple-box-shadow(700);
+  $shadows-medium: multiple-box-shadow(200);
+  $shadows-big: multiple-box-shadow(100);
+  $shadows-hor: multiple-box-shadowH(9);
+
+      
+  .stars {
+    background: transparent;
+      
+    &:after {
+      content: "";
+      position: absolute;
+      top: 2000px;
+      background: transparent;
+    }
+
+    &.stars1 {
+      width: 1px;
+      height: 1px;
+      box-shadow: $shadows-small;
+      animation: animStar 50s linear infinite;
+      &:after {
+        width: 1px;
+        height: 1px;
+        box-shadow: $shadows-small;
+      }
+    }
+        
+    &.stars2 {
+      width: 2px;
+      height: 2px;
+      box-shadow: $shadows-medium;
+      animation: animStar 100s linear infinite;
+        
+      &:after {
+        width: 2px;
+        height: 2px;
+        box-shadow: $shadows-medium;
+      }
+    }
+    
+    &.stars3 {
+      width: 3px;
+      height: 3px;
+      box-shadow: $shadows-big;
+      animation: animStar 150s linear infinite;
+        
+      &:after {
+        width: 3px;
+        height: 3px;
+        box-shadow: $shadows-big;
+      }
+    }
+    
+    &.stars4,
+    &.stars5 {
+      width: 10px;
+      height: 3px;
+      box-shadow: $shadows-hor;
+      animation: animStarHor 5s linear infinite;
+      
+      &:after {
+        width: 10px;
+        height: 3px;
+        left: 10000px;
+        top: 0px;
+        box-shadow: $shadows-hor;
+      }
+    }
+    &.stars5 {
+      animation: animStarHor2 30s linear infinite;
+    }
+    
+    &.stars6,
+    &.stars7 {
+      width: 10px;
+      height: 3px;
+      box-shadow: $shadows-hor;
+      animation: animStarHor3 20s linear infinite;
+      
+      &:after {
+        width: 10px;
+        height: 3px;
+        right: 10000px;
+        top: 0px;
+        box-shadow: $shadows-hor;
+      }
+    }
+    &.stars7 {
+      animation: animStarHor4 10s linear infinite;
+    }
+  }
+
+
+  @keyframes animStar {
+    0% {
+      transform: translateY(0px);
+    }
+
+    100% {
+      transform: translateY(-2000px);
+    }
+  }
+
+  @keyframes animStarHor {
+    0% {
+      transform: translate(0px, 0px);
+    }
+
+    100% {
+      transform: translate(-10000px, 2000px);
+    }
+  }
+
+  @keyframes animStarHor2 {
+    0% {
+      transform: translate(0px, 0px);
+    }
+
+    100% {
+      transform: translate(-10000px, -2000px);
+    }
+  }
+
+  @keyframes animStarHor3 {
+    0% {
+      transform: translate(-10000px, 0px);
+    }
+
+    100% {
+      transform: translate(0px, 2000px);
+    }
+  }
+
+  @keyframes animStarHor4 {
+    0% {
+      transform: translate(-10000px, 0px);
+    }
+
+    100% {
+      transform: translate(0px, -2000px);
+    }
+  }
+
+}
