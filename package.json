@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@types/three": "^0.126.1",
+    "@types/three": "^0.126.2",
     "rxjs": "~6.4.0",
     "three": "^0.126.1",
     "tslib": "^1.10.0",

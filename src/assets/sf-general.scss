@@ -1,0 +1,22 @@
+.flex-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  place-items: center;
+
+  &.column {
+    flex-direction: column;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.sf-section {
+  height: 100vh;
+}

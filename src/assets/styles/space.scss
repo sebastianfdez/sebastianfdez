@@ -1,4 +1,4 @@
-sf-coming-soon {
+sf-space {
   top: 0;
   z-index: -1;
   width: 100vw;
@@ -7,6 +7,7 @@ sf-coming-soon {
   flex-direction: column;
   background-color: #000000;
   overflow: hidden;
+  position: fixed;
   div {
     width: 100%;
   }
