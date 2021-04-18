@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SFHomeLogoComponent } from './home-logo/home-logo.component';
 import { SFHomepageComponent } from './home-page.component';
-import { SFProfilePictureComponent } from './profile-picture/profile-picture.component';
 
 @NgModule({
   imports: [
@@ -17,7 +16,6 @@ import { SFProfilePictureComponent } from './profile-picture/profile-picture.com
   ],
   declarations: [
     SFHomeLogoComponent,
-    SFProfilePictureComponent,
     SFHomepageComponent,
   ],
   providers: [],

@@ -20,3 +20,13 @@
 .sf-section {
   height: 100vh;
 }
+
+.sf-button {
+  &.sf-big {
+    min-width: 100px;
+  }
+}
+
+.sf-title {
+  color: #FFFFFF;
+}

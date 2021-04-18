@@ -10,7 +10,11 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule),
-  }
+  },
+  {
+    path: 'cv',
+    loadChildren: () => import('./portafolio/portafolio.module').then(m => m.SfPortafolioModule),
+  },
 ];
 
 @NgModule({
