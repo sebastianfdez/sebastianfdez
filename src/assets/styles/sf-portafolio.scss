@@ -8,9 +8,6 @@ sf-portafolio {
 
 sf-carousel {
   @extend .flex-div, .column, .full-width;
-  $slides: 8;
-  $pi: 3.141592653589793;
-  $theta: 2 * $pi / $slides;
   $slide-height: 300px;
   $slide-width: 300px;
 	perspective: 300px;
@@ -19,6 +16,11 @@ sf-carousel {
   .sf-carousel-container {
 		transform-style: preserve-3d;
     height: $slide-height;
+    // &:hover {
+    //   .sf-carousel-slide-container {
+    //     animation-play-state: paused;
+    //   }
+    // }
     .sf-carousel-slide-container {
       margin: 10px;
       position: absolute;
@@ -28,13 +30,17 @@ sf-carousel {
       height: $slide-height;
       width: $slide-width;
       z-index: 2;
+      --scaleStart: 0rad;
+      --scaleEnd: 0rad;
+      backface-visibility: hidden;
       .sf-carousel-slide {
         height: $slide-height;
         width: $slide-width;
         background-color: #FFFFFF;
         cursor: pointer;
         z-index: 2;
-        animation: goBack 0.5s linear;
+        position: absolute;
+        // animation: goBack 0.5s linear forwards;
         // &::before {
         //   content: '';
         //   position: absolute;
@@ -52,33 +58,17 @@ sf-carousel {
         //   transform: scaleX(1);
         // }
       }
-      // backface-visibility: hidden;
-      @for $i from 1 through $slides {
-        &:nth-child(#{$i}) {
-          --scaleStart: #{($i - 1) * $theta}rad;
-          --scaleEnd: #{($i - 1) * $theta - 2 * $pi}rad;
-          animation: rotate 20s linear infinite;
-        }
+      &.rotate {
+        animation: rotate 30s linear infinite;
       }
-      &:hover {
-        transform: rotateY(0) !important;
-        width: 60vw;
-        left: 20%;
-        height: 70vh;
-        top: -50%;
-        .sf-carousel-slide {
-          animation: goFront 0.5s linear forwards;
-        }
+      &.active {
+        // width: 60vw;
+        // left: 20%;
+        // height: 70vh;
+        // .sf-carousel-slide {
+        //   animation: goFront 0.5s linear forwards;
+        // }
       }
-    }
-  }
-  &:hover {
-    .sf-carousel-slide-container {
-			@for $i from 1 through $slides {
-				&:nth-child(#{$i}) {
-          animation-play-state: paused;
-				}
-			}
     }
   }
 
@@ -92,8 +82,17 @@ sf-carousel {
   }
   
   @keyframes goBack {
+    0% {
+      position: absolute;
+      top: -40%;
+      width: 60vw;
+      height: 70vh;
+    }
     99% {
       position: absolute;
+      top: 0%;
+      height: 15vh;
+      width: 20vw;
     }
     100% {
       position: relative;
@@ -105,15 +104,16 @@ sf-carousel {
   @keyframes goFront {
     0% {
       position: relative;
-      top: 50%;
+      top: 0%;
       height: 15vh;
-      width: 20%;
+      width: 20vw;
     }
     100% {
       position: absolute;
-      top: -20%;
-      height: 70vh;
+      top: -40%;
       width: 60vw;
+      height: 70vh;
+      transform: rotateY(0) !important;
     }
   }
 }
