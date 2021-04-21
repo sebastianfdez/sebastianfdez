@@ -1,5 +1,9 @@
 sf-portafolio {
   @extend .flex-div, .column;
+
+  .sf-title {
+    margin-bottom: 40px;
+  }
 }
 
 sf-carousel {
@@ -8,51 +12,68 @@ sf-carousel {
   $pi: 3.141592653589793;
   $theta: 2 * $pi / $slides;
   $slide-height: 300px;
+  $slide-width: 300px;
 	perspective: 300px;
   height: $slide-height;
 
   .sf-carousel-container {
 		transform-style: preserve-3d;
     height: $slide-height;
-    .sf-carousel-slide {
-      width: 400px;
-      height: $slide-height;
-      background-color: #FFFFFF;
+    .sf-carousel-slide-container {
       margin: 10px;
       position: absolute;
       left: calc(50% - 200px);
       top: 0;
       transform-origin: 50% 50% (-1000px);
-      cursor: pointer;
-      // backface-visibility: hidden;
-			@for $i from 1 through $slides {
-				&:nth-child(#{$i}) {
-					--scaleStart: #{($i - 1) * $theta}rad;
-					--scaleEnd: #{($i - 1) * $theta - 2 * $pi}rad;
-          animation: rotate 20s linear infinite;
-				}
-			}
-      &::before {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(to right, #b47dcd, #e878a2, #eb85ab);
-        z-index: 1;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.5s ease-in-out;
+      height: $slide-height;
+      width: $slide-width;
+      z-index: 2;
+      .sf-carousel-slide {
+        height: $slide-height;
+        width: $slide-width;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        z-index: 2;
+        animation: goBack 0.5s linear;
+        // &::before {
+        //   content: '';
+        //   position: absolute;
+        //   bottom: 0;
+        //   left: 0;
+        //   width: 100%;
+        //   height: 5px;
+        //   background: linear-gradient(to right, #b47dcd, #e878a2, #eb85ab);
+        //   z-index: 1;
+        //   transform: scaleX(0);
+        //   transform-origin: left;
+        //   transition: transform 0.5s ease-in-out;
+        // }
+        // &:hover::before {
+        //   transform: scaleX(1);
+        // }
       }
-      
-      &:hover::before {
-        transform: scaleX(1);
+      // backface-visibility: hidden;
+      @for $i from 1 through $slides {
+        &:nth-child(#{$i}) {
+          --scaleStart: #{($i - 1) * $theta}rad;
+          --scaleEnd: #{($i - 1) * $theta - 2 * $pi}rad;
+          animation: rotate 20s linear infinite;
+        }
+      }
+      &:hover {
+        transform: rotateY(0) !important;
+        width: 60vw;
+        left: 20%;
+        height: 70vh;
+        top: -50%;
+        .sf-carousel-slide {
+          animation: goFront 0.5s linear forwards;
+        }
       }
     }
   }
   &:hover {
-    .sf-carousel-slide {
+    .sf-carousel-slide-container {
 			@for $i from 1 through $slides {
 				&:nth-child(#{$i}) {
           animation-play-state: paused;
@@ -60,13 +81,39 @@ sf-carousel {
 			}
     }
   }
-}
 
-@keyframes rotate {
-  0% {
-    transform: rotateY(var(--scaleStart));
+  @keyframes rotate {
+    0% {
+      transform: rotateY(var(--scaleStart));
+    }
+    100% {
+      transform: rotateY(var(--scaleEnd));
+    }
   }
-  100% {
-    transform: rotateY(var(--scaleEnd));
+  
+  @keyframes goBack {
+    99% {
+      position: absolute;
+    }
+    100% {
+      position: relative;
+      height: $slide-height;
+      width: $slide-width;
+    }
+  }
+  
+  @keyframes goFront {
+    0% {
+      position: relative;
+      top: 50%;
+      height: 15vh;
+      width: 20%;
+    }
+    100% {
+      position: absolute;
+      top: -20%;
+      height: 70vh;
+      width: 60vw;
+    }
   }
 }
