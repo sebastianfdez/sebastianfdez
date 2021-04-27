@@ -30,9 +30,9 @@ sf-carousel {
       height: $slide-height;
       width: $slide-width;
       z-index: 2;
-      --scaleStart: 0rad;
+      --scaleStart: 1.5707963267948966rad;
       --scaleEnd: 0rad;
-      backface-visibility: hidden;
+      // backface-visibility: hidden;
       .sf-carousel-slide {
         height: $slide-height;
         width: $slide-width;
@@ -68,6 +68,9 @@ sf-carousel {
         // .sf-carousel-slide {
         //   animation: goFront 0.5s linear forwards;
         // }
+      }
+      &.rotate-test {
+        transform: rotateY(var(--scaleStart));
       }
     }
   }

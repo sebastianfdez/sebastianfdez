@@ -7,28 +7,26 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewChildren }
   animations: [
     trigger('goFrontCont', [
       state('front', style({
-        transform: 'rotateY(0deg)',
-        position: 'relative',
+        transform: 'rotateY(0)',
         width: '60vw',
-        left: '20%',
+        left: '20vw',
         height: '70vh',
+        top: '-75%',
       })),
       state('back', style({
-        transform: 'none',
-        position: 'absolute',
         height: '300px',
         width: '300px',
       })),
       transition('* => *', [
         query(":self", animate('0.5s')),
-        query("@goFront", [
-          animateChild(),
-        ]),
+        // query("@goFront", [
+        //   animateChild(),
+        // ]),
       ]),
     ]),
     trigger('goFront', [
       state('front', style({
-        top: '-40%',
+        top: '0%',
         width: '60vw',
         height: '70vh',
       })),
@@ -66,7 +64,9 @@ export class SfCarouselComponent implements AfterViewInit {
       }
     });
     this.slides.forEach((slide, i) => {
-      slide.style.setProperty('--scaleStart', this.getTheta(i, true));
+      const scaleStart = this.getTheta(i, true);
+      console.log(scaleStart);
+      slide.style.setProperty('--scaleStart', scaleStart);
       slide.style.setProperty('--scaleEnd', this.getTheta(i, false));
       slide.classList.add('rotate');
     })
@@ -104,7 +104,7 @@ export class SfCarouselComponent implements AfterViewInit {
     // #{($i - 1) * $theta - 2 * $pi
     let rad = (i - 1) * 2 * Math.PI / this.experiences.length;
     rad -= start ? 0 : (2 * Math.PI);
-    return `${rad}rad`;
+    return `${rad + 0.1}rad`;
   }
 
   isActive(element: HTMLElement): string {
