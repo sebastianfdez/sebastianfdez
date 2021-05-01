@@ -4,3 +4,4 @@ e2e
 .firebase
 .firebaserc
 firebase.json
+firebase-keys.ts

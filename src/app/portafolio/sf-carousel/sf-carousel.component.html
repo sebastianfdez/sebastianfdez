@@ -2,21 +2,24 @@
   (mouseover)="mouseOverCont(true)"
   (mouseleave)="mouseOverCont(false)"
 >
-  <div class="sf-carousel-slide-container flex-div column"
-    *ngFor="let experience of experiences; let i = index;"
-    #slide (click)="mouseOver(slide, true)"
-    (mouseleave)="mouseOver(slide, false)"
-    [@goFrontCont]="isActive(slide)"
-    (@goFrontCont.done)="animationDone(slide, experience)"
-  >
-    <div class="sf-carousel-slide"
-    ></div>
-  </div>
+  <ng-container *ngIf="experiences$ | async as experiences">
+    <div class="sf-carousel-slide-container flex-div column"
+      *ngFor="let experience of experiences; let i = index;"
+      #slide (click)="mouseOver(slide, true)"
+      (mouseleave)="mouseOver(slide, false)"
+      [@goFrontCont]="isActive(slide)"
+      (@goFrontCont.done)="animationDone(slide, experience)"
+    >
+      <div class="sf-carousel-slide flex-div"
+        [class.empty]="!experience.logo">
+        <img *ngIf="experience.logo" [src]="experience.logo">
+      </div>
+    </div>
+  </ng-container>
 </div>
 
 <div class="active-experience flex-div" *ngIf="activeExperience"
-  
   (click)="mouseLeaveActive()"
 >
-  <span class="title">{{activeExperience.name}}</span>
+  <sf-active-slide class="full-height full-width" [experience]="activeExperience"></sf-active-slide>
 </div>

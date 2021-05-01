@@ -1,6 +1,9 @@
-import { animate, animateChild, query, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SFExperience } from '../models/sf-experience';
+import { SFExperiencesService } from '../services/sf-experiences.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'sf-carousel',
@@ -39,31 +42,21 @@ import { SFExperience } from '../models/sf-experience';
   ],
 })
 export class SfCarouselComponent implements AfterViewInit {
-
-  experiences: SFExperience[] = [
-    { name: 'exp1' },
-    { name: 'exp2' },
-    { name: 'exp3' },
-    { name: 'exp4' },
-    { name: 'exp5' },
-    { name: 'exp6' },
-    { name: 'exp7' },
-    { name: 'exp8' },
-  ];
+  experiences$: Observable<Partial<SFExperience>[]> = this.sfExperiencesService.getExperiences().pipe(
+    tap((experiences) => this.totalExperiences = experiences.length),
+  );
 
   activeExperience: SFExperience = null;
+
+  totalExperiences = 1;
 
   slides: HTMLElement[] = [];
 
   @ViewChild('container', { static: true }) carouselContainer: ElementRef<HTMLElement>;
 
-  @HostListener('mouseover') onMouseOver() {
-    console.log('mouseover')
-  }
-
-  @HostListener('mouseout') onMouseOut() {
-    console.log('mouseOut')
-  }
+  constructor(
+    private sfExperiencesService: SFExperiencesService,
+  ) {}
 
   ngAfterViewInit() {
     this.carouselContainer.nativeElement.childNodes.forEach((element) => {
@@ -97,10 +90,6 @@ export class SfCarouselComponent implements AfterViewInit {
       if (slide.getAnimations().filter((a) => a.playState === "running").length) {
         return;
       }
-      const actualRad = parseFloat(element.style.getPropertyValue('--scaleStartPaused').split('rad')[0]) % (2 * Math.PI);
-      // if (actualRad > 0.4 && actualRad < 5.9) {
-      //   return;
-      // }
       element.classList.add('active');
     }
   }
@@ -159,7 +148,7 @@ export class SfCarouselComponent implements AfterViewInit {
     // -> $theta = 2 * $pi / N
     // -> N = this.experiences.length
     // -> 2 * $pi ( ($i) / this.experiences.length + time / totalTime )
-    let rad = ((this.experiences.length - i - 1) / this.experiences.length ) * 2 * Math.PI;
+    let rad = ((this.totalExperiences - i - 1) / this.totalExperiences ) * 2 * Math.PI;
     rad += start ? (4 * Math.PI) : (2 * Math.PI);
     return rad;
   }

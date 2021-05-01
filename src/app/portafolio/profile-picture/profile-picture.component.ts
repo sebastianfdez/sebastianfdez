@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { ApiService } from '../../shared/services/api.service';
 
 @Component({
   selector: 'sf-profile-picture',
@@ -7,18 +10,26 @@ import { Component, OnInit } from '@angular/core';
 
 export class SFProfilePictureComponent implements OnInit {
   imageUrls = [
-    'https://firebasestorage.googleapis.com/v0/b/iamsebastianfdez.appspot.com/o/IMG_20190826_190218.jpg?alt=media&token=c02dd603-af89-4b49-93c4-0cd079492c15',
-    'https://firebasestorage.googleapis.com/v0/b/iamsebastianfdez.appspot.com/o/20181017_140601.jpg?alt=media&token=e029796f-7c7f-4d8e-b1ef-ad147c73f107',
-    'https://firebasestorage.googleapis.com/v0/b/iamsebastianfdez.appspot.com/o/IMG_20190817_203917.jpg?alt=media&token=c33bc092-f275-4f2a-81e1-d5b57cf78efe',
+    'IMG_20200530_155931.jpeg',
+    'Capture%20d%E2%80%99e%CC%81cran%202021-04-29%20a%CC%80%2010.09.52.png',
+    'IMG_20190826_190218.jpg',
+    'WhatsApp%20Image%202021-04-29%20at%2020.21.31.jpeg',
+    'IMG_20190817_203917.jpg',
   ];
 
   active = 0;
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+  ) {
     setInterval(() => {
       this.active = (this.active + 1) % this.imageUrls.length;
     }, 5000);
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  getImage(path: string): Observable<any> {
+    return this.apiService.getFirebaseImage(path).getDownloadURL();
+  }
 }

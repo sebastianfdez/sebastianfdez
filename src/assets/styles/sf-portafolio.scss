@@ -30,7 +30,10 @@ sf-carousel {
       position: absolute;
       left: calc(50% - 150px);
       top: 20vh;
-      transform-origin: 50% 50% (-80vw);
+      transform-origin: 50% 50% (-400px);
+      @media(min-width: $sf-min-mobile) {
+        transform-origin: 50% 50% (-80vw);
+      }
       height: $slide-height;
       width: $slide-width;
       --scaleStart: 1.5707963267948966rad;
@@ -39,9 +42,17 @@ sf-carousel {
       .sf-carousel-slide {
         height: 100%;
         width: 100%;
-        background-color: #FFFFFF;
         cursor: pointer;
         position: absolute;
+        img {
+          max-width: 100%;
+          min-width: 100%;
+          border-radius: 10px;
+          background-color: #FFFFFF;
+        }
+        &.empty {
+          background-color: #FFFFFF;
+        }
       }
       &.rotate {
         animation: rotate 30s linear infinite;
@@ -70,5 +81,11 @@ sf-carousel {
     background-color: #FFFFFF;
     color: black;
     z-index: 2;
+  }
+}
+
+sf-active-slide {
+  sf-experience-container {
+
   }
 }
