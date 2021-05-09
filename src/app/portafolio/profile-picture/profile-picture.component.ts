@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { ApiService } from '../../shared/services/api.service';
+import { AngularFireStorageReference } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
+import { FirebaseService } from '../../shared/services/firebase.service';
 
 @Component({
   selector: 'sf-profile-picture',
@@ -11,16 +11,16 @@ import { ApiService } from '../../shared/services/api.service';
 export class SFProfilePictureComponent implements OnInit {
   imageUrls = [
     'IMG_20200530_155931.jpeg',
-    'Capture%20d%E2%80%99e%CC%81cran%202021-04-29%20a%CC%80%2010.09.52.png',
+    'profile-pic2.png',
     'IMG_20190826_190218.jpg',
-    'WhatsApp%20Image%202021-04-29%20at%2020.21.31.jpeg',
+    'profile-pic1.jpeg',
     'IMG_20190817_203917.jpg',
   ];
 
   active = 0;
 
   constructor(
-    private apiService: ApiService,
+    private firebaseService: FirebaseService,
   ) {
     setInterval(() => {
       this.active = (this.active + 1) % this.imageUrls.length;
@@ -30,6 +30,6 @@ export class SFProfilePictureComponent implements OnInit {
   ngOnInit() {}
 
   getImage(path: string): Observable<any> {
-    return this.apiService.getFirebaseImage(path).getDownloadURL();
+    return this.firebaseService.getImageSrc(path);
   }
 }

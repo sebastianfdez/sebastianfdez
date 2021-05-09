@@ -77,15 +77,28 @@ sf-carousel {
     width: 60vw;
     left: 20vw;
     height: 70vh;
-    top: 20%;
-    background-color: #FFFFFF;
+    top: 20vh;
     color: black;
     z-index: 2;
   }
 }
 
 sf-active-slide {
-  sf-experience-container {
+  .sf-experience-container {
+    .experience-title {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 3rem;
+    }
+    .experience-image {
+      background-color: #FFFFFF;
+    }
 
+    &.show-details {
+      .experience-title {
+        display: initial;
+      }
+    }
   }
 }

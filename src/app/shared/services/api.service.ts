@@ -7,20 +7,13 @@ import { Observable } from 'rxjs';
 export class ApiService {
   URL_API = '';
 
-  cacheImage: Map<string, Blob> = new Map<string, Blob>();
-
   constructor(
     private httpClient: HttpClient,
-    private storage: AngularFireStorage,
   ) {}
 
   public get<T>(path: string, params?: {[param: string]: string | string[]}): Observable<T> {
     const headers: HttpHeaders = this.getHeaders();
     return this.httpClient.get<T>(`${this.URL_API}/${path}`, { headers, params });
-  }
-
-  public getFirebaseImage(imageUrl: string): AngularFireStorageReference {
-    return this.storage.ref(imageUrl);
   }
 
   private getHeaders(): HttpHeaders {

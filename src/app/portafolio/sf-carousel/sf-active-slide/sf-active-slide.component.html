@@ -1,4 +1,13 @@
-<div class="sf-experience-container flex-div full-height"
-  [class.empty]="!experience.logo">
-  <img *ngIf="experience.logo" [src]="experience.logo" class="full-width">
-</div>
+<ng-container *ngIf="imageSrc$ | async as imageSrc">
+  <div class="sf-experience-container flex-div full-height"
+    #activeContainer
+    [class.empty]="!imageSrc">
+    <img *ngIf="imageSrc" [src]="imageSrc" class="experience-image full-width"
+      [@showDetailsImg]="isActive(activeContainer)"
+      (@showDetailsImg.done)="activeElement(activeContainer, null)"
+    >
+    <!-- <span class="experience-title full-width" #title
+      [@showDetails]="isActive(title)"
+    >{{experience.name}}</span> -->
+  </div>
+</ng-container>

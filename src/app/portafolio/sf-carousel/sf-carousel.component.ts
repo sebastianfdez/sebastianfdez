@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { SFExperience } from '../models/sf-experience';
 import { SFExperiencesService } from '../services/sf-experiences.service';
 import { tap } from 'rxjs/operators';
+import { FirebaseService } from '../../shared/services/firebase.service';
 
 @Component({
   selector: 'sf-carousel',
@@ -56,6 +57,7 @@ export class SfCarouselComponent implements AfterViewInit {
 
   constructor(
     private sfExperiencesService: SFExperiencesService,
+    private firebaseService: FirebaseService,
   ) {}
 
   ngAfterViewInit() {
@@ -75,19 +77,29 @@ export class SfCarouselComponent implements AfterViewInit {
 
   animationDone(container: HTMLElement, experience: SFExperience) {
     if (container.classList.contains('active')) {
-      const slide: HTMLElement = container.firstChild as HTMLElement;
-      slide.style.setProperty('visibility', 'hidden');
       this.activeExperience = experience;
+      let slide: HTMLElement;
+      container.childNodes.forEach((child) => {
+        if (!slide && child.nodeName === "DIV") {
+          slide = child as HTMLElement;
+        }
+      });
+      slide.style.setProperty('visibility', 'hidden');
     }
   }
 
   mouseOver(element: HTMLElement, enter: boolean) {
-    const slide: HTMLElement = element.firstChild as HTMLElement;
+    let slide: HTMLElement;
+    element.childNodes.forEach((child) => {
+      if (!slide && child.nodeName === "DIV") {
+        slide = child as HTMLElement;
+      }
+    });
     if (element.classList.contains('ng-animating')) {
       return;
     }
     if (enter) {
-      if (slide.getAnimations().filter((a) => a.playState === "running").length) {
+      if (slide && slide.getAnimations().filter((a) => a.playState === "running").length) {
         return;
       }
       element.classList.add('active');
@@ -97,8 +109,12 @@ export class SfCarouselComponent implements AfterViewInit {
   pause() {
     this.slides.forEach((slide) => slide.getAnimations().forEach((a) => {
       if ((a as any).animationName === "rotate") {
-        slide.style.setProperty('--scaleStartPaused', `${this.getThetaPaused(slide, a.currentTime)}rad`);
-        // slide.style.setProperty('--scaleEndPaused', `${this.getTheta(i, false, a.currentTime)}rad`);
+        if (slide.style) {
+          slide.style.setProperty('--scaleStartPaused', `${this.getThetaPaused(slide, a.currentTime)}rad`);
+          // slide.style.setProperty('--scaleEndPaused', `${this.getTheta(i, false, a.currentTime)}rad`);  
+        } else {
+          console.log(slide);
+        }
         a.pause();
       }
     }));
@@ -110,8 +126,15 @@ export class SfCarouselComponent implements AfterViewInit {
       slide.classList.remove('active');
       slide.getAnimations().forEach((a) => {
         if ((a as any).animationName === "rotate") {
-          const slide_: HTMLElement = slide.firstChild as HTMLElement;
-          slide_.style.setProperty('visibility', 'visible');
+          let slide_: HTMLElement;
+          slide.childNodes.forEach((element) => {
+            if (!slide_ && element.nodeName === "DIV") {
+              slide_ = element as HTMLElement;
+            }
+          });
+          if (slide_ && slide_.style) {
+            slide_.style.setProperty('visibility', 'visible');
+          }
           a.play();
         }
       });
@@ -128,19 +151,26 @@ export class SfCarouselComponent implements AfterViewInit {
           a.pause();
         }
       }));
-    } else {
-      if (this.activeExperience) {
-        return;
-      }
-      this.slides.forEach((slide) => slide.getAnimations().forEach((a) => {
-        if ((a as any).animationName === "rotate") {
-          const slide_: HTMLElement = slide.firstChild as HTMLElement;
-          slide_.style.setProperty('visibility', 'visible');
-          a.play();
-          this.activeExperience = null;
-        }
-      }));
+      return;
     }
+    if (this.activeExperience) {
+      return;
+    }
+    this.slides.forEach((slide) => slide.getAnimations().forEach((a) => {
+      if ((a as any).animationName === "rotate") {
+        let slide_: HTMLElement;
+        slide.childNodes.forEach((element) => {
+          if (!slide_ && element.nodeName === "DIV") {
+            slide_ = element as HTMLElement;
+          }
+        });
+        if (slide_ && slide_.style) {
+          slide_.style.setProperty('visibility', 'visible');
+        }
+        a.play();
+        this.activeExperience = null;
+      }
+    }));
   }
 
   getTheta(i: number, start: boolean): number {
@@ -164,5 +194,9 @@ export class SfCarouselComponent implements AfterViewInit {
 
   isActive(element: HTMLElement): string {
     return element.classList.contains('active') ? 'front' : 'back';
+  }
+
+  getImage(path: string): Observable<any> {
+    return this.firebaseService.getImageSrc(path);
   }
 }

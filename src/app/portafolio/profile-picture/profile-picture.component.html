@@ -1,7 +1,11 @@
 <div class="img-container flex-div column"
   id="sfimage">
-  <div class="image-pop-up flex-div" *ngFor="let imageUrl of imageUrls; let i = index"
-    [class.active]="active === i" #imagePopUp>
-    <img [src]="getImage(imageUrl) | async">
-  </div>
+  <ng-container *ngFor="let imageUrl of imageUrls; let i = index">
+    <ng-container *ngIf="getImage(imageUrl) | async as src">
+      <div class="image-pop-up flex-div"
+        [class.active]="active === i" #imagePopUp>
+        <img [src]="src">
+      </div>
+    </ng-container>
+  </ng-container>
 </div>

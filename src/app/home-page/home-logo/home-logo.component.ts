@@ -26,7 +26,6 @@ export class SFHomeLogoComponent implements OnInit {
     this.homeLogo.nativeElement.appendChild(this.renderer.domElement);
     var objLoader = new STLLoader();
     objLoader.load('../../../assets/objects/home-logo/home-logo.stl', (object) => {
-      console.log(object);
       const material = new THREE.MeshStandardMaterial( {
         color: 0xffffff,
         metalness: 1.0,
@@ -41,9 +40,7 @@ export class SFHomeLogoComponent implements OnInit {
         mesh.rotation.x += 0.02;
         this.render.emit();
       }, 100);
-    }, (xhr) => {
-      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-    }, (error) => {
+    }, (xhr) => {}, (error) => {
       console.log('An error happened: ', error);
     });
   }

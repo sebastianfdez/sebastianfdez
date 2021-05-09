@@ -38,8 +38,6 @@ export class SFHomepageComponent implements OnInit {
 
   render() {
     this.renderer.render(this.scene, this.camera);
-    // this.light.updateMatrix();
-    // this.light.updateMatrixWorld();
     if (this.resizeRendererToDisplaySize()) {
       const canvas = this.renderer.domElement;
       this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -58,8 +56,7 @@ export class SFHomepageComponent implements OnInit {
     return needResize;
   }
 
-  animate() {
-    // requestAnimationFrame(this.animate.bind(this));
+  animate() { 
     this.render();
   }
 }
